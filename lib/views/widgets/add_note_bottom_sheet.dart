@@ -24,6 +24,11 @@ class AddNoteBottomSheet extends StatelessWidget {
             BlocProvider.of<NotesCubit>(context).fetchNotes();
 
             Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Note added successfully"),
+              ),
+            );
           }
         },
         builder: (context, state) {
