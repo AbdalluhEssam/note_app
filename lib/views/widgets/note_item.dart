@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:note_app/cubits/notes_cubit/notes_cubit.dart';
 import 'package:note_app/models/note_model.dart';
 import 'package:note_app/views/edit_note_view.dart';
 
@@ -45,7 +48,10 @@ class NoteItem extends StatelessWidget {
                   child: Text(noteModel.subTitle),
                 ),
                 trailing: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      noteModel.delete();
+                      BlocProvider.of<NotesCubit>(context).fetchNotes();
+                    },
                     icon: const Icon(
                       FontAwesomeIcons.trash,
                       size: 26,
@@ -54,7 +60,7 @@ class NoteItem extends StatelessWidget {
               Padding(
                 padding: const EdgeInsetsDirectional.only(end: 24),
                 child: Text(
-                  "${DateTime.parse(noteModel.date).day}/${DateTime.parse(noteModel.date).month}/${DateTime.parse(noteModel.date).year}",
+                  "${DateFormat.yMd().format(DateTime.parse(noteModel.date))} ${DateFormat.jm().format(DateTime.parse(noteModel.date))}",
                   style: TextStyle(
                       color: Colors.black.withOpacity(0.5), fontSize: 16),
                 ),
