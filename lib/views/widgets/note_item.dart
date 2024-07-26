@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:note_app/models/note_model.dart';
 import 'package:note_app/views/edit_note_view.dart';
 
 class NoteItem extends StatelessWidget {
   const NoteItem({
     super.key,
+    required this.noteModel,
   });
+
+  final NoteModel noteModel;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class NoteItem extends StatelessWidget {
         );
       },
       child: Card(
-        color: const Color(0xffFFCC80),
+        color: Color(noteModel.color),
         child: Padding(
           padding: const EdgeInsets.only(top: 24, bottom: 24, left: 24),
           child: Column(
@@ -35,10 +39,10 @@ class NoteItem extends StatelessWidget {
                   fontSize: 18,
                   color: Colors.black.withOpacity(0.5),
                 ),
-                title: const Text("Flutter tips"),
-                subtitle: const Padding(
-                  padding: EdgeInsets.only(top: 16, bottom: 16),
-                  child: Text("Build Your Career with Abdalluh Essam"),
+                title: Text(noteModel.title),
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 16),
+                  child: Text(noteModel.subTitle),
                 ),
                 trailing: IconButton(
                     onPressed: () {},
@@ -50,7 +54,7 @@ class NoteItem extends StatelessWidget {
               Padding(
                 padding: const EdgeInsetsDirectional.only(end: 24),
                 child: Text(
-                  "May 21 , 2024",
+                  "${DateTime.parse(noteModel.date).day}/${DateTime.parse(noteModel.date).month}/${DateTime.parse(noteModel.date).year}",
                   style: TextStyle(
                       color: Colors.black.withOpacity(0.5), fontSize: 16),
                 ),
