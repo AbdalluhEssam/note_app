@@ -1,23 +1,35 @@
 import 'package:flutter/material.dart';
-
-import 'custom_search_icon.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../cubits/notes_cubit/notes_cubit.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key, required this.title, required this.icon, this.onPressed});
   final String title;
   final IconData icon;
-  final void Function()? onPressed;
+  final VoidCallback onPressed;
+
+  const CustomAppBar({super.key, required this.title, required this.icon, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    return  Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Row(
       children: [
-        Text(
-          title,
-          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        Expanded(
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'ابحث...',
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+              prefixIcon: const Icon(Icons.search),
+            ),
+            onChanged: (value) {
+              BlocProvider.of<NotesCubit>(context).searchNotes(value);
+            },
+          ),
         ),
-        CustomSearchIcon(iconData: icon,onPressed: onPressed,),
+        const SizedBox(width: 8),
+        IconButton(
+          icon: Icon(icon),
+          onPressed: onPressed,
+        ),
       ],
     );
   }
