@@ -4,6 +4,8 @@ import 'package:note_app/constants.dart';
 class CustomTextField extends StatelessWidget {
   final String hint;
   final int maxLines;
+  final TextEditingController? controller;
+  final bool? obscureText;
   final void Function(String?)? onSaved;
   final void Function(String)? onChanged;
 
@@ -12,13 +14,15 @@ class CustomTextField extends StatelessWidget {
       required this.hint,
       this.maxLines = 1,
       this.onSaved,
-      this.onChanged});
+      this.onChanged, this.controller, this.obscureText});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       onSaved: onSaved,
       onChanged: onChanged,
+      controller: controller,
+      obscureText: obscureText ?? false,
       validator: (value) {
         if (value?.isEmpty ?? true) {
           return 'Filed is required';
