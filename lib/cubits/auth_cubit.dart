@@ -32,6 +32,8 @@ class AuthCubit extends Cubit<AuthState> {
         orElse: () => throw Exception("بيانات الدخول غير صحيحة"),
       );
       Hive.box('auth').put('loggedIn', true);
+      Hive.box('auth').put('username', user.username);
+
       emit(AuthSuccess());
     } catch (e) {
       emit(AuthFailure("اسم المستخدم أو كلمة المرور غير صحيحة"));

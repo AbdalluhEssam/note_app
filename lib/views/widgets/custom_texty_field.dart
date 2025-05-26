@@ -6,6 +6,8 @@ class CustomTextField extends StatelessWidget {
   final int maxLines;
   final TextEditingController? controller;
   final bool? obscureText;
+  final String? Function(String?)? validator;
+
   final void Function(String?)? onSaved;
   final void Function(String)? onChanged;
 
@@ -14,7 +16,10 @@ class CustomTextField extends StatelessWidget {
       required this.hint,
       this.maxLines = 1,
       this.onSaved,
-      this.onChanged, this.controller, this.obscureText});
+      this.onChanged,
+      this.controller,
+      this.obscureText,
+      this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +28,7 @@ class CustomTextField extends StatelessWidget {
       onChanged: onChanged,
       controller: controller,
       obscureText: obscureText ?? false,
-      validator: (value) {
-        if (value?.isEmpty ?? true) {
-          return 'Filed is required';
-        }
-        return null;
-      },
+      validator: validator,
       maxLines: maxLines,
       cursorColor: kPrimaryColor,
       decoration: InputDecoration(

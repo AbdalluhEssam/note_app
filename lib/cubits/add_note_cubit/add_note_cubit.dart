@@ -18,12 +18,14 @@ class AddNoteCubit extends Cubit<AddNoteState> {
     note.color = color.value;
     emit(AddNoteLoading());
     try {
+      final username = Hive.box('auth').get('username');
+      note.username = username;
       var notesBox = Hive.box<NoteModel>(kNotesBox);
       await notesBox.add(note);
       emit(AddNoteSuccess());
     } catch (e) {
       emit(AddNoteFailure(message: e.toString()));
-      log(e.toString());
     }
   }
+
 }

@@ -14,11 +14,13 @@ class NotesCubit extends Cubit<NotesState> {
 
   fetchNotes() async {
     notes?.clear();
+    final username = Hive.box('auth').get('username');
     var notesBox = Hive.box<NoteModel>(kNotesBox);
-    notes = notesBox.values.toList();
-    filteredNotes = notes; // أول مرة بتكون كلها
+    notes = notesBox.values.where((note) => note.username == username).toList();
+    filteredNotes = notes;
     emit(NotesSuccess());
   }
+
 
   void searchNotes(String query) {
     if (query.isEmpty) {

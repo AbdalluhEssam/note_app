@@ -11,6 +11,9 @@ import 'widgets/custom_button.dart';
 class LoginView extends StatelessWidget {
   final TextEditingController username = TextEditingController();
   final TextEditingController password = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,7 @@ class LoginView extends StatelessWidget {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => NotesView()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const NotesView()));
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
           }
@@ -26,38 +29,47 @@ class LoginView extends StatelessWidget {
         builder: (context, state) => SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.15,
-                ),
-                Image.asset(
-                  'assets/icon/icon.png',
-                  width: 200,
-                  height: 200,
-                ),
-                const SizedBox(height: 30),
-                const Text(
-                  'تسجيل الدخول',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 30),
-                CustomTextField(hint: 'اسم المستخدم', controller: username),
-                const SizedBox(height: 12),
-                CustomTextField(hint: 'كلمة المرور', controller: password, obscureText: true),
-                const SizedBox(height: 20),
-                CustomButton(
-                  onTap: () => context.read<AuthCubit>().login(username.text, password.text),
-                  text: 'تسجيل الدخول',
-                ),
-                TextButton(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SignUpView())),
-                  child: const Text("ما عندكش حساب؟ سجل هنا"),
-                )
-              ],
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+                  Image.asset('assets/icon/icon.png', width: 200, height: 200),
+                  const SizedBox(height: 30),
+                  const Text('تسجيل الدخول', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 30),
+                  CustomTextField(
+                    hint: 'اسم المستخدم',
+                    controller: username,
+                    validator: (value) => value == null || value.isEmpty ? 'اسم المستخدم مطلوب' : null,
+                  ),
+                  const SizedBox(height: 12),
+                  CustomTextField(
+                    hint: 'كلمة المرور',
+                    controller: password,
+                    obscureText: true,
+                    validator: (value) => value == null || value.isEmpty ? 'كلمة المرور مطلوبة' : null,
+                  ),
+                  const SizedBox(height: 20),
+                  CustomButton(
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        context.read<AuthCubit>().login(username.text, password.text);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("كل الحقول مطلوبة")));
+                      }
+                    },
+                    text: 'تسجيل الدخول',
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SignUpView())),
+                    child: const Text("ليس لديى حساب؟ سجل هنا"),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

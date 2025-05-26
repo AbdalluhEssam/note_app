@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:note_app/cubits/add_note_cubit/add_note_cubit.dart';
 import 'package:note_app/views/widgets/custom_texty_field.dart';
 import 'package:note_app/views/widgets/list_view_color_item.dart';
@@ -64,6 +65,7 @@ class _AddNoteFormState extends State<AddNoteForm> {
                       subTitle: subTitle!,
                       date: DateTime.now().toString(),
                       color: BlocProvider.of<AddNoteCubit>(context).color.value,
+                      username:Hive.box('auth').get('username'),
                     );
 
                     BlocProvider.of<AddNoteCubit>(context).addNote(note);

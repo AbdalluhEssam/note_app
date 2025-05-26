@@ -16,7 +16,7 @@ class CustomAppBar extends StatelessWidget {
         Expanded(
           child: TextField(
             decoration: InputDecoration(
-              hintText: 'ابحث...',
+              hintText: 'Search $title',
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               prefixIcon: const Icon(Icons.search),
             ),
@@ -25,11 +25,7 @@ class CustomAppBar extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(width: 8),
-        IconButton(
-          icon: Icon(icon),
-          onPressed: onPressed,
-        ),
+
       ],
     );
   }

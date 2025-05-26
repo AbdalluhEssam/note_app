@@ -9,4 +9,5 @@ const List<Color> colors = [
   Color(0xff8CDFD6),
   Color(0xff6DC0D5),
   Color(0xff5A716A),
+  Color(0xffffC8D2),
 ];

@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'cubits/auth_cubit.dart';
 import 'cubits/notes_cubit/notes_cubit.dart';
 import 'models/user_model.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // مهم لتشغيل async
   await Hive.initFlutter();
